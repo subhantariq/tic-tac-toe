@@ -13,7 +13,7 @@ int main()
 		cin.getline(firstPlayer, size);
 		cout << "Enter name of second player: ";
 		cin.getline(secondPlayer, size);
-		bool flag = rand() % 2;
+		bool flag = rand() % 2;//randomly selecting person for toss
 		if (flag)
 			cout << firstPlayer;
 		else
@@ -22,50 +22,38 @@ int main()
 		cin >> option;
 		while (option != 'H' && option != 'h' && option != 'T' && option != 't') {
 			cout << "Wrong option entered! Please choose correct option: ";
-			cin >> option;
+			cin >> option;//taking value again if wrong input entered
 		}
-		bool temp = rand() % 2;
+		if (option == 'H' || option == 'h')//this is for checking either a person win toss or not
+			option = '1';
+		else 
+			option = '0';
+		bool temp = rand() % 2;//toss happening here
 		cout << "Coin tosses for ";
 		if (temp == 0)
 			cout << "head" << endl;
 		else
 			cout << "tail" << endl;
-		if (temp && (option == 'T' || option == 't')) {
-			if (flag) {
-				cout << firstPlayer;
+		if (int(option) == int(temp)) {//checking toss results
+			if (flag)
 				temp = 1;
-			}
-			else {
-				cout << secondPlayer;
+			else
 				temp = 0;
-			}
-		}
-		else if (temp == 0 && (option == 'h' || option == 'H')) {
-			if (flag) {
-				cout << firstPlayer;
-				temp = 1;
-			}
-			else {
-				cout << secondPlayer;
-				temp = 0;
-			}
 		}
 		else {
-			if (flag) {
-				cout << secondPlayer;
+			if (flag)
 				temp = 0;
-			}
-			else {
-				cout << firstPlayer;
+			else
 				temp = 1;
-			}
 		}
-		cout << " won the toss!" << endl;
-		int turn;
-		cout << "Please select your marker [o] or [x]: ";
 		if (temp) {
-			turn = 1;
+			cout <<firstPlayer<< " won the toss!" << endl;
+			cout << "Please select your marker [o] or [x]: ";
 			cin >> marker1;
+			while (marker1 != 'x' && marker1 != 'X' && marker1 != '0' && marker1 != 'o' && marker1 != 'O') {
+				cout << "Wrong marker selected! Enter again: ";
+				cin >> marker1;
+			}
 			if (marker1 == 'x' || marker1 == 'X') {
 				marker2 = 'o';
 			}
@@ -73,8 +61,13 @@ int main()
 				marker2 = 'x';
 		}
 		else {
-			turn = 0;
+			cout << secondPlayer << " won the toss!" << endl;
+			cout << "Please select your marker [o] or [x]: ";
 			cin >> marker2;
+			while (marker2 != 'x' && marker2 != 'X' && marker2 != '0' && marker2 != 'o' && marker2 != 'O') {
+				cout << "Wrong marker selected! Enter again: ";
+				cin >> marker2;
+			}
 			if (marker2 == 'x' || marker2 == 'X') {
 				marker1 = 'o';
 			}
@@ -83,7 +76,7 @@ int main()
 		}
 		char arr[10] = "123456789";
 		int number;
-		for (int i = 1, n = 0; i <= 9; i++) {
+		for (int i = 1, n = 0; i <= 9; i++) {//tic tac toe pattern
 			for (int j = 1; j < 18; j++)
 			{
 				if (j % 6 == 0)
@@ -99,7 +92,7 @@ int main()
 		}
 		do {
 			flag = true;
-			if (turn) {
+			if (temp) {
 				cout << firstPlayer << " - [" << marker1 << "] your turn: ";
 				do {
 					cin >> number;
@@ -113,7 +106,7 @@ int main()
 						cout << "Wrong input! Please select from options: ";
 				} while (flag == true);
 				arr[number - 1] = marker1;
-				turn--;
+				temp=temp-1;
 			}
 			else {
 				cout << secondPlayer << " - [" << marker2 << "] your turn: ";
@@ -129,7 +122,7 @@ int main()
 						cout << "Wrong input! Please select from options: ";
 				} while (flag == true);
 				arr[number - 1] = marker2;
-				turn++;
+				temp++;
 			}
 
 
@@ -164,7 +157,7 @@ int main()
 				cout << endl;
 			}
 			if (flag) {
-				if (turn)
+				if (temp)
 					cout << secondPlayer;
 				else
 					cout << firstPlayer;
@@ -178,12 +171,16 @@ int main()
 			}
 		} while (flag);
 		if (flag == false)
-			cout << "Match drawn";
+			cout << "Match drawn" << endl;
 		cout << "Want to play again Y/N: ";
 		cin >> option;
 		while (option != 'Y' && option != 'y' && option != 'n' && option != 'N') {
 			cout << "Wrong input! Enter again: ";
 			cin >> option;
 		}
+		cin.ignore(); /* if user wants to play again newline character will
+		not remove from input stream (screen) created due to cin >> option if
+		this line is not entered while choosing yes it will not ask for first player
+		name because it directly recieves a newline with is terminator for getline*/
 	} while (option=='y'||option=='Y');
 }
